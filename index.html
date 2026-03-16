@@ -52,9 +52,10 @@ body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg2); color: v
 .top-bar-logo span { color: #68c6ef; }
 .top-bar-client { display: flex; align-items: center; gap: 10px; }
 .top-bar-client label { color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.top-bar-client input { background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: #fff; font-size: 13px; font-family: inherit; padding: 6px 12px; width: 190px; }
-.top-bar-client input::placeholder { color: rgba(255,255,255,0.3); }
-.top-bar-client input:focus { outline: none; border-color: var(--c3); background: rgba(255,255,255,0.12); }
+.top-bar-client input { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.22); border-radius: var(--radius); color: #fff; font-size: 13px; font-family: inherit; padding: 6px 12px; width: 190px; }
+.top-bar-client input::placeholder { color: rgba(255,255,255,0.45); }
+.top-bar-client input:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); }
+.top-bar-client input:focus { outline: none; border-color: var(--c3); background: rgba(255,255,255,0.18); }
 
 /* ── 레이아웃 ── */
 .layout { display: flex; min-height: calc(100vh - 57px); }
@@ -230,7 +231,7 @@ textarea { resize: vertical; min-height: 88px; line-height: 1.65; }
 <div class="top-bar">
   <div class="top-bar-logo">be<span>star</span> branding workshop</div>
   <div class="top-bar-client">
-    <label>Client</label>
+    <label>Brand</label>
     <input type="text" id="cn" placeholder="이름 또는 브랜드명..." oninput="cN=this.value" />
   </div>
 </div>
@@ -429,7 +430,7 @@ function renderStep(){
       <div class="card-hd"><div class="card-ic">🎯</div><div><div class="card-ttl">타겟 페르소나</div><div class="card-sub">내 브랜드는 누구를 위해 존재하는가 — 최대 5개 선택</div></div></div>
       ${thinkBox('target',true)}
       <div class="ex ex-copy" onclick="copyEx('자기계발자 · 크리에이터 · 자기주도자 · 열정추구자를 위한, 퇴사 후 1인기업 도전 중인 7년차 강사','target-custom')">
-        <div class="ex-lbl">bestar 클라이언트 예시 — 클릭하면 복사</div>
+        <div class="ex-lbl">bestar brand 예시 — 클릭하면 복사</div>
         <div class="ex-txt"><strong>선택 키워드</strong>: 자기계발자 · 크리에이터 · 자기주도자 · 열정추구자<br><strong>한 줄 설명</strong>: 퇴사 후 1인기업 도전 중인 7년차 강사, 자기 이름으로 먹고 살고 싶은 사람</div>
         <div class="ex-copy-hint">▲ 클릭하면 아래 입력창에 복사</div>
       </div>
@@ -522,7 +523,7 @@ function renderStep(){
     </div>${mode==='brand'?nav():nav('콘텐츠 하우스로 →')}`;
 
   } else if(s.id==='brand_result'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">▣</div><div><div class="card-ttl">브랜드 하우스 완성</div><div class="card-sub">${cN||'클라이언트'}</div></div></div>${renderBH()}</div>${mode==='both'?nav('콘텐츠 하우스로 →'):nav(null,true)}`;
+    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">▣</div><div><div class="card-ttl">브랜드 하우스 완성</div><div class="card-sub">${cN||'Brand'}</div></div></div>${renderBH()}</div>${mode==='both'?nav('콘텐츠 하우스로 →'):nav(null,true)}`;
 
   } else if(s.id==='identity'){
     el.innerHTML=`<div class="card">
@@ -570,7 +571,7 @@ function renderStep(){
     </div>${nav('완성 보기 →')}`;
 
   } else if(s.id==='content_result'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">▣</div><div><div class="card-ttl">콘텐츠 하우스 완성</div><div class="card-sub">${cN||'클라이언트'}</div></div></div>${renderCH()}</div>${nav(null,true)}`;
+    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">▣</div><div><div class="card-ttl">콘텐츠 하우스 완성</div><div class="card-sub">${cN||'Brand'}</div></div></div>${renderCH()}</div>${nav(null,true)}`;
   }
 }
 
