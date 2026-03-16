@@ -15,8 +15,6 @@
   --radius: 10px; --radius-lg: 14px;
 }
 body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; }
-
-/* 헤더 */
 .top-bar { background: var(--b1); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(11,63,107,0.3); }
 .top-bar-logo { color: #fff; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
 .top-bar-logo span { color: var(--b4); }
@@ -25,11 +23,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg2); color: v
 .top-bar-client input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 14px; font-family: inherit; padding: 6px 12px; width: 200px; }
 .top-bar-client input::placeholder { color: rgba(255,255,255,0.4); }
 .top-bar-client input:focus { outline: none; background: rgba(255,255,255,0.15); border-color: var(--b4); }
-
-/* 레이아웃 */
 .layout { display: flex; min-height: calc(100vh - 56px); }
-
-/* 사이드바 */
 .sidebar { width: 220px; background: var(--b1); padding: 1.5rem 0; flex-shrink: 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
 .mode-section { padding: 0 1rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem; }
 .mode-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding: 0 4px; }
@@ -46,8 +40,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg2); color: v
 .step-name { font-size: 12px; color: rgba(255,255,255,0.6); }
 .step-item.active .step-name { color: #fff; font-weight: 500; }
 .step-item.done .step-name { color: rgba(255,255,255,0.8); }
-
-/* 메인 콘텐츠 */
 .main { flex: 1; padding: 2rem; max-width: 900px; }
 .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.25rem; box-shadow: 0 1px 4px rgba(11,63,107,0.06); }
 .card-hd { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
@@ -60,6 +52,9 @@ body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg2); color: v
 .ex { background: var(--b5); border: 1px solid var(--b4); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 1.25rem; }
 .ex-lbl { font-size: 10px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
 .ex-txt { font-size: 13px; color: var(--b1); line-height: 1.7; }
+.ex-copy { cursor: pointer; transition: background 0.15s; }
+.ex-copy:hover { background: var(--b4) !important; border-radius: var(--radius); }
+.ex-copy-hint { font-size: 10px; color: var(--b2); margin-top: 5px; opacity: 0.8; }
 .fl { margin-bottom: 1.25rem; }
 .fl-lbl { font-size: 13px; color: var(--text2); margin-bottom: 6px; display: block; font-weight: 500; }
 .fl-hint { font-size: 11px; color: var(--text3); margin-bottom: 8px; display: block; }
@@ -72,16 +67,8 @@ input[type="text"], textarea {
 }
 input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--b2); box-shadow: 0 0 0 3px rgba(0,129,180,0.1); }
 textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-
-/* 키워드 */
 .kw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 6px; }
-.kw {
-  padding: 8px 11px; border-radius: var(--radius);
-  border: 1.5px solid var(--border); background: var(--bg2);
-  color: var(--text2); font-size: 12px; cursor: pointer;
-  text-align: left; transition: all 0.12s; line-height: 1.4;
-  font-family: inherit;
-}
+.kw { padding: 8px 11px; border-radius: var(--radius); border: 1.5px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 12px; cursor: pointer; text-align: left; transition: all 0.12s; line-height: 1.4; font-family: inherit; }
 .kw .kr { display: block; font-size: 12px; font-weight: 500; }
 .kw .en { display: block; font-size: 10px; opacity: 0.55; margin-top: 1px; }
 .kw:hover { border-color: var(--b3); background: var(--b6); }
@@ -92,8 +79,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 .kw[data-type="fv"][data-sel="1"] { background: var(--b1) !important; }
 .kw[data-type="ev"][data-sel="1"] { background: var(--b2) !important; }
 .kw[data-type="pv"][data-sel="1"] { background: var(--b3) !important; }
-
-/* 아코디언 */
 .acc { border: 1.5px solid var(--border2); border-radius: var(--radius); margin-bottom: 8px; overflow: hidden; }
 .acc-hd { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; background: var(--b6); cursor: pointer; user-select: none; transition: background 0.15s; }
 .acc-hd:hover { background: var(--b5); }
@@ -104,12 +89,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 .acc-arrow.open { transform: rotate(180deg); }
 .acc-body { padding: 12px; display: none; background: var(--bg); }
 .acc-body.open { display: block; }
-
 .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; background: var(--b2); color: #fff; font-size: 10px; margin-left: 6px; vertical-align: middle; font-weight: 700; }
 .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
 .tag-b { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; margin: 2px; background: var(--b5); color: var(--b1); border: 1px solid var(--b4); font-weight: 500; }
-
-/* 네비게이션 버튼 */
 .nav { display: flex; gap: 10px; margin-top: 1.5rem; }
 .btn-p { padding: 11px 24px; border-radius: var(--radius); border: 1.5px solid var(--border2); background: var(--bg); color: var(--text2); font-size: 14px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
 .btn-p:hover { background: var(--b6); border-color: var(--b2); }
@@ -117,8 +99,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 .btn-n:hover { background: var(--b2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,129,180,0.3); }
 .btn-n.b2 { background: var(--b2); }
 .btn-n.b2:hover { background: var(--b3); }
-
-/* 브랜드 하우스 */
 .bh-wrap { margin-top: 1.25rem; }
 .bh-roof { position: relative; height: 90px; margin-bottom: -2px; }
 .bh-roof svg { width: 100%; height: 100%; }
@@ -156,6 +136,37 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 .ch-fc:first-child { border-right: 1.5px solid rgba(255,255,255,0.15); }
 .ctitle { font-size: 9px; font-weight: 700; color: var(--b3); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
 .ctitle.lt { color: var(--b4); }
+
+/* ── 생각해보기 ── */
+.think { background: var(--b6); border: 1.5px solid var(--b4); border-radius: var(--radius); margin-bottom: 1.25rem; overflow: hidden; }
+.think-hd { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; cursor: pointer; user-select: none; transition: background 0.15s; }
+.think-hd:hover { background: var(--b5); }
+.think-ttl { font-size: 12px; font-weight: 700; color: var(--b2); }
+.think-body { padding: 0 16px; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.2s; }
+.think-body.open { max-height: 600px; padding: 12px 16px; }
+.think-q { font-size: 12.5px; color: var(--text2); line-height: 1.7; margin-bottom: 8px; padding: 8px 12px; background: var(--bg); border-radius: 6px; border-left: 3px solid var(--b3); }
+.think-q strong { color: var(--b1); display: block; margin-bottom: 2px; font-size: 12px; }
+
+/* ── Brand Statement 빈칸 템플릿 ── */
+.fill-wrap { background: var(--bg); border: 1.5px solid var(--b4); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 1rem; }
+.fill-label { font-size: 10px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.fill-row { font-size: 13.5px; color: var(--text2); line-height: 2.8; }
+.fill-row .fi { display: inline-block; border: none; border-bottom: 2px solid var(--b3); background: var(--b6); color: var(--b1); font-size: 13px; font-family: inherit; font-weight: 600; padding: 2px 8px; min-width: 70px; max-width: 200px; outline: none; border-radius: 4px 4px 0 0; transition: border-color 0.15s, background 0.15s; }
+.fill-row .fi:focus { border-bottom-color: var(--b1); background: var(--b5); }
+.gen-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 20px; border: none; border-radius: var(--radius); background: var(--b2); color: #fff; font-size: 13px; font-family: inherit; cursor: pointer; font-weight: 700; transition: all 0.15s; margin-top: 12px; }
+.gen-btn:hover { background: var(--b1); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,129,180,0.25); }
+
+/* ── Brand Concept ── */
+.concept-box { background: var(--b1); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 1rem; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: 15px; font-weight: 700; color: #fff; line-height: 2.2; }
+.concept-box .ci { display: inline-block; border: none; border-bottom: 2px solid var(--b4); background: transparent; color: #fff; font-size: 15px; font-family: inherit; font-weight: 700; padding: 0 6px; min-width: 80px; max-width: 180px; outline: none; }
+.concept-box .ci::placeholder { color: rgba(255,255,255,0.35); font-weight: 400; font-size: 13px; }
+.concept-box .ci:focus { border-bottom-color: #fff; }
+
+/* ── Brand Message ── */
+.msg-box { background: var(--bg3); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--b1); font-style: italic; }
+.msg-box .mi { flex: 1; border: none; border-bottom: 2px solid var(--b3); background: transparent; color: var(--b1); font-size: 14px; font-family: inherit; font-style: italic; padding: 2px 4px; outline: none; }
+.msg-box .mi:focus { border-bottom-color: var(--b1); }
+.msg-quote { font-size: 22px; color: var(--b3); font-weight: 700; line-height: 1; }
 </style>
 </head>
 <body>
@@ -184,7 +195,13 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 
 <script>
 let mode='both', step=0, cN='';
-let d={ target:[],targetCustom:'', role:[],roleCustom:'', product:'',benefit:'', fv:[],ev:[],pv:[], promise:'',slogan:'', identity:'', scale:'',time:'',perf:'', method:'',attitude:'', expertise:'',humanity:'', dream:'',value:'' };
+let d={
+  target:[], targetCustom:'', role:[], roleCustom:'', product:'', benefit:'',
+  fv:[], ev:[], pv:[], promise:'', slogan:'',
+  identity:'', scale:'', time:'', perf:'', method:'', attitude:'',
+  expertise:'', humanity:'', dream:'', value:'',
+  brandMsg:'', bsConcept1:'', bsConcept2:''
+};
 
 const bSteps=[{id:'target',label:'타겟 페르소나',icon:'🎯'},{id:'role',label:'브랜드 역할',icon:'🏠'},{id:'benefit',label:'핵심 혜택',icon:'✦'},{id:'values',label:'핵심 가치',icon:'💎'},{id:'promise',label:'브랜드 약속',icon:'◈'},{id:'slogan',label:'슬로건',icon:'★'},{id:'brand_result',label:'브랜드 하우스',icon:'🏠'}];
 const cSteps=[{id:'identity',label:'정체성',icon:'▲'},{id:'authority',label:'권위의 증거',icon:'📊'},{id:'pillars',label:'기둥',icon:'🏗'},{id:'core',label:'콘텐츠 영역',icon:'◈'},{id:'foundation',label:'토대',icon:'🧱'},{id:'content_result',label:'콘텐츠 하우스',icon:'🏠'}];
@@ -199,7 +216,6 @@ function setMode(m,btn){
 
 function render(){
   const steps=getSteps();
-  // 사이드바
   document.getElementById('sidebar-steps').innerHTML=steps.map((s,i)=>{
     const cls=i<step?'done':i===step?'active':'';
     return `<div class="step-item ${cls}" onclick="goStep(${i})">
@@ -213,7 +229,125 @@ function goStep(i){ step=i; render(); }
 function next(){ if(step<getSteps().length-1){ step++; render(); window.scrollTo(0,0); } }
 function prev(){ if(step>0){ step--; render(); window.scrollTo(0,0); } }
 
-// ─── 키워드 데이터 ───
+// ── 생각해보기 데이터 ──
+const stepGuides={
+  target:[
+    '<strong>브랜드의 핵심 고객을 떠올리세요!</strong> 우리의 제품이나 서비스를 가장 필요로 하는 사람들은 누구인가요? 현재 고객과 잠재 고객의 특성을 분석해 보세요.',
+    '<strong>타겟 고객과의 연결을 고려하세요!</strong> 고객의 소비 패턴, 라이프스타일, 가치관을 반영해 선택하세요. 웰니스 중심 브랜드라면 "웰니스족"을 선택할 수 있습니다.',
+    '<strong>최대 5개를 선택하세요!</strong> 키워드를 너무 많이 선택하면 브랜드의 초점이 흐려집니다. 핵심 고객을 명확하게 정의할 수 있도록 가장 중요한 키워드를 선택하세요.',
+    '<strong>뽑은 키워드를 분류해 보세요!</strong> 키워드는 행동, 목적, 가치, 태도, 정체성이라는 5가지 카테고리로 분류할 수 있습니다.'
+  ],
+  role:[
+    '<strong>브랜드의 역할을 생각해보세요!</strong> 브랜드가 단순한 제품·서비스를 넘어 고객에게 어떤 가치를 전달하나요? 고객이 이 브랜드를 어떤 존재로 인식하길 바라나요?',
+    '<strong>고객 경험의 본질을 고려하세요!</strong> 고객과의 관계에서 강조하고 싶은 특징은 무엇인가요? 브랜드가 고객과 어떤 방식으로 소통하고 도움을 주는지 생각해 보세요.',
+    '<strong>최대 3개를 선택하세요!</strong> 브랜드의 핵심 역할을 명확하게 정의할 수 있도록 가장 중요한 키워드를 선택하세요.',
+    '<strong>브랜드 가치와 일관되게 선택하세요!</strong> 타겟 페르소나와 조화를 이루는 역할을 선택하세요. 브랜드가 실현할 수 있는 역할을 중심으로 선택해야 합니다.'
+  ],
+  benefit:[
+    '<strong>상품/서비스의 특징(Feature)을 적으세요.</strong> 구체적인 제공 내용은? 예) 6회 줌 미팅, 1:1 피드백, 워크시트 제공',
+    '<strong>그것의 장점(Advantage)은 무엇인가요?</strong> 왜 그 특징이 좋은지. 예) 체계적인 과정으로 진행 → 흔들리지 않는 방향이 생김',
+    '<strong>고객이 얻는 진짜 혜택(Benefit)은?</strong> 고객의 삶에서 어떤 변화가 생기나요? 예) 내 브랜드 언어를 스스로 갖게 된다',
+    '<strong>FAB 순서로 생각하면 "진짜 혜택"이 보입니다.</strong> Feature → Advantage → Benefit 순서로 따라가면 고객이 원하는 진짜 변화가 나타납니다.'
+  ],
+  fv:[
+    '<strong>고객 관점에서 생각하세요!</strong> 고객이 브랜드를 경험하며 어떤 점이 뛰어나다고 느낄까요? 고객의 입장에서 가장 필요로 할 기능적 가치를 상상해 보세요.',
+    '<strong>브랜드의 차별성을 고려하세요!</strong> 경쟁 브랜드와 구별될 수 있는 고유한 가치를 강조하세요. 간단·직관적인 경험을 제공한다면 "쉬운"과 "명확한"을 선택하세요.',
+    '<strong>최대 3개를 선택하세요!</strong> 가장 중요한 기능적 가치만 선택해 명확한 브랜드 정체성을 만드세요.',
+    '<strong>키워드를 카테고리로 분류해 보세요!</strong> 효율성, 편리성, 신뢰성, 품질, 경제성, 안전성, 지속가능성 중 어디에 속하나요?'
+  ],
+  ev:[
+    '<strong>고객의 감정을 떠올려 보세요!</strong> 고객이 브랜드를 경험하면서 어떤 감정을 느끼길 바라나요? 브랜드가 고객에게 주는 기분, 분위기, 정서를 생각해 보세요.',
+    '<strong>타겟 고객과의 연결을 고려하세요!</strong> 브랜드가 주는 감성이 따뜻한가요? 차분한가요? 고객이 연상하는 감정을 반영하세요.',
+    '<strong>최대 3개를 선택하세요!</strong> 핵심적인 감성적 가치만 선택해 브랜드의 정체성을 명확하게 하세요.',
+    '<strong>카테고리를 분류해 보세요!</strong> 긍정적인, 감정적 연결, 자기확장, 역동적인, 안락함·안정감이라는 5가지 카테고리 중 어디인가요?'
+  ],
+  pv:[
+    '<strong>브랜드의 목소리를 상상하세요!</strong> 브랜드가 목소리를 낼 수 있다면 어떤 말투와 성격을 가질까요? 고객이 브랜드와 대화할 때 느끼는 감정을 생각하세요.',
+    '<strong>타겟 고객과의 연결을 고려하세요!</strong> 브랜드의 성격이 타겟 고객의 가치관·라이프스타일·선호도와 잘 연결되도록 선택하세요.',
+    '<strong>최대 3개를 선택하세요!</strong> 고객이 가장 먼저 떠올릴 수 있는 강렬한 이미지를 만드세요.',
+    '<strong>키워드를 카테고리로 분류해 보세요!</strong> 진정성, 역동성, 능력, 스타일이라는 4가지 카테고리 중 어디에 속하나요?'
+  ],
+  promise:[
+    '<strong>지금 고객이 겪는 가장 큰 어려움(Pain Point)은 무엇인가요?</strong> 막연함, 방향 없음, 시간 낭비 등 구체적으로 적어보세요.',
+    '<strong>우리 브랜드와 함께하면 고객의 삶에 어떤 변화가 생기나요?</strong> Before(지금) → After(함께한 후)로 생각해보세요.',
+    '<strong>우리 브랜드만이 줄 수 있는 특별한 것은 무엇인가요?</strong> 경쟁자와 다른 점 한 가지를 떠올려보세요.',
+    '<strong>위에서 고른 가치 키워드들을 약속 문장에 녹여보세요.</strong> 아래 템플릿을 채우면 초안이 자동으로 만들어집니다.'
+  ],
+  slogan:[
+    '<strong>10초 안에 기억될 수 있는 한 문장은?</strong> 길면 기억 못합니다. 짧고 강렬하게.',
+    '<strong>인스타 바이오에 바로 쓸 수 있는 문장은?</strong> 팔로우해야 할 이유가 담겨 있나요?',
+    '<strong>앞에서 만든 브랜드 약속을 한 줄로 압축하면?</strong> 핵심만 남기고 나머지는 버리세요.',
+    '<strong>"나는 ___가 아니라 ___를 판다"</strong> — 이 문장이 완성되면 슬로건의 방향이 보입니다.'
+  ],
+  identity:[
+    '<strong>내가 가진 가장 독특한 강점은 무엇인가요?</strong> 다른 사람들이 나에게 자주 물어보거나 칭찬하는 것은?',
+    '<strong>내가 사회적으로 기여하는 것은 무엇인가요?</strong> 내 일이 세상에 어떤 가치를 만드나요?',
+    '<strong>[강점] + [사회적 쓸모] = 타이틀</strong> "강사" → "학습경험 설계자", "코치" → "브랜드 언어 안내자"처럼.',
+    '<strong>동사형·명사형으로 표현하세요.</strong> "한다"가 아니라 "설계자", "안내자", "큐레이터"처럼 역할이 담긴 명사로.'
+  ],
+  authority:[
+    '<strong>지금까지 일한 기간과 처리한 건수를 숫자로 적어보세요.</strong> "오래 했어요" ❌ → "7년, 200건" ✅',
+    '<strong>고객에게 받은 가장 임팩트 있는 피드백은?</strong> 수치나 구체적 변화가 담긴 후기가 있다면 적어보세요.',
+    '<strong>수상, 미디어 노출, 유명 기관 협업 이력이 있나요?</strong> 제3자가 검증한 것들을 모아보세요.',
+    '<strong>규모(Scale), 경력(Time), 성과(Performance)</strong> 세 가지 숫자로 신뢰를 만드세요.'
+  ],
+  pillars:[
+    '<strong>내가 콘텐츠를 만들 때 가장 중요하게 생각하는 기준은?</strong> 나만의 필터, 관점, 원칙은 무엇인가요?',
+    '<strong>비슷한 분야 다른 사람과 내가 다른 점은 무엇인가요?</strong> 방식이나 시선의 차이를 찾아보세요.',
+    '<strong>방식(Method)은 "어떻게 하나"를 뜻합니다.</strong> 예) "강점을 먼저 잡고, 콘텐츠 구조를 뒤에 얹는다"',
+    '<strong>태도(Attitude)는 "어떤 마음으로"를 뜻합니다.</strong> 예) "돌려 말하지 않고 핵심을 짚어주되, 클라이언트 언어를 먼저 듣는다"'
+  ],
+  core:[
+    '<strong>내가 가장 잘 알고, 가장 자주 가르치는 주제는?</strong> 이것이 실력(Expertise) 콘텐츠의 원천입니다.',
+    '<strong>내 인간적인 면, 실수, 일상 중 공유할 수 있는 것은?</strong> 이것이 매력(Humanity) 콘텐츠의 원천입니다.',
+    '<strong>실력은 "뭘 아는지", 매력은 "어떤 사람인지"입니다.</strong> 둘의 균형이 팔로워를 팬으로 만듭니다.',
+    '<strong>각 축에서 콘텐츠 주제 2~3개씩 떠올려 적어보세요.</strong>'
+  ],
+  foundation:[
+    '<strong>내 이상적인 고객은 어떤 사람인가요?</strong> 직업, 상황, 고민을 구체적으로 묘사해보세요.',
+    '<strong>그 고객이 나와 함께한 후 가장 크게 달라지는 것은?</strong> 수치나 구체적 변화로 표현하면 강력합니다.',
+    '<strong>내가 이 일을 하는 진짜 이유는 무엇인가요?</strong> 이것이 약속(Value)의 뿌리입니다.',
+    '<strong>꿈의 고객(Target)과 약속(Value)을 연결해 한 문장으로 써보세요.</strong>'
+  ]
+};
+
+function thinkBox(id, open){
+  const qs=stepGuides[id];
+  if(!qs) return '';
+  return `<div class="think">
+    <div class="think-hd" onclick="var b=this.nextElementSibling,a=this.querySelector('.acc-arrow');b.classList.toggle('open');a.classList.toggle('open')">
+      <span class="think-ttl">💡 생각해보기 — 선택 전에 읽어보세요</span>
+      <span class="acc-arrow ${open?'open':''}">▼</span>
+    </div>
+    <div class="think-body ${open?'open':''}">
+      ${qs.map(q=>`<div class="think-q">${q}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function copyEx(text, targetId){
+  const el=document.getElementById(targetId);
+  if(!el) return;
+  el.value=text;
+  el.focus();
+  el.style.borderColor='var(--b3)';
+  setTimeout(()=>{ el.style.borderColor=''; },1000);
+}
+
+function genPromise(){
+  const t=document.getElementById('bs-t').value||(d.target[0]||d.targetCustom||'타겟 고객');
+  const f=document.getElementById('bs-f').value||(d.fv[0]||'기능적 혜택');
+  const e=document.getElementById('bs-e').value||(d.ev[0]||'감성적 혜택');
+  const b=document.getElementById('bs-b').value||(cN||'브랜드명');
+  const r=document.getElementById('bs-r').value||(d.role[0]||d.roleCustom||'역할');
+  const p=document.getElementById('bs-p').value||(d.benefit||'약속 내용');
+  const stmt=`우리 브랜드는 ${t}에게 ${f}와 ${e}를 제공하기 위해 ${b}로서 ${r} 역할을 수행하며 ${p}을 약속합니다`;
+  d.promise=stmt;
+  const ta=document.getElementById('promise-ta');
+  if(ta){ ta.value=stmt; }
+}
+
+// ── 키워드 데이터 ──
 const targetKws=[
   {kr:'트렌드 세터',en:'Trend setter'},{kr:'실용주의자',en:'Pragmatist'},{kr:'디지털 네이티브',en:'Digital Native'},
   {kr:'완벽주의자',en:'Perfectionist'},{kr:'경험주의자',en:'Experience Seeker'},{kr:'DIY 창작자',en:'DIY Creator'},
@@ -292,35 +426,184 @@ function updateAccCounts(){
   });
 }
 
-const nav=(lbl,isLast)=>`<div class="nav">${step>0?'<button class="btn-p" onclick="prev()">← 이전</button>':''}<button class="btn-n ${isLast?'b2':''}" onclick="${isLast?"alert('워크숍이 완성되었습니다! 결과를 복사하거나 저장하세요.')":"next()"}">${isLast?'✓ 완성':'다음 단계 →'}</button></div>`;
+const nav=(lbl,isLast)=>`<div class="nav">${step>0?'<button class="btn-p" onclick="prev()">← 이전</button>':''}<button class="btn-n ${isLast?'b2':''}" onclick="${isLast?"alert('워크숍이 완성되었습니다! 결과를 저장하거나 공유하세요.')":"next()"}">${isLast?'✓ 완성':'다음 단계 →'}</button></div>`;
 
 function renderStep(){
   const steps=getSteps(),s=steps[step],isLast=step===steps.length-1;
   const el=document.getElementById('sc');
+
   if(s.id==='target'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">🎯</div><div><div class="card-ttl">타겟 페르소나</div><div class="card-sub">내 브랜드는 누구를 위해 존재하는가 — 최대 5개 선택</div></div></div><div class="guide">브랜딩의 시작은 <strong>"누구를 위한 브랜드인가"</strong>를 선명하게 하는 것입니다. 막연하게 "모두를 위한"이라고 하면 아무에게도 닿지 않아요. 가장 잘 도울 수 있는 <strong>구체적인 고객 유형</strong>을 골라보세요.</div><div class="ex"><div class="ex-lbl">bestar 클라이언트 예시</div><div class="ex-txt"><strong>선택 키워드</strong>: 자기계발자 · 크리에이터 · 자기주도자 · 열정추구자<br><strong>한 줄 설명</strong>: 퇴사 후 1인기업 도전 중인 7년차 강사, 자기 이름으로 먹고 살고 싶은 사람</div></div><div class="fl"><label class="fl-lbl">타겟 유형 선택 <span class="badge" id="badge-target">${d.target.length}</span></label><span class="fl-hint">선택: ${d.target.length}/5</span>${kGrid(targetKws,'target',5)}</div><div class="fl"><label class="fl-lbl">한 줄로 설명</label><input type="text" value="${d.targetCustom}" oninput="d.targetCustom=this.value" placeholder="예) 38세, 여성, 퇴사 준비 중인 7년차 HRD 강사" /></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">🎯</div><div><div class="card-ttl">타겟 페르소나</div><div class="card-sub">내 브랜드는 누구를 위해 존재하는가 — 최대 5개 선택</div></div></div>
+      ${thinkBox('target',true)}
+      <div class="ex ex-copy" onclick="copyEx('자기계발자 · 크리에이터 · 자기주도자 · 열정추구자를 위한, 퇴사 후 1인기업 도전 중인 7년차 강사','target-custom')">
+        <div class="ex-lbl">bestar 클라이언트 예시 — 클릭하면 아래 입력창에 복사</div>
+        <div class="ex-txt"><strong>선택 키워드</strong>: 자기계발자 · 크리에이터 · 자기주도자 · 열정추구자<br><strong>한 줄 설명</strong>: 퇴사 후 1인기업 도전 중인 7년차 강사, 자기 이름으로 먹고 살고 싶은 사람</div>
+        <div class="ex-copy-hint">👆 클릭하면 아래 입력창에 복사</div>
+      </div>
+      <div class="fl"><label class="fl-lbl">타겟 유형 선택 <span class="badge" id="badge-target">${d.target.length}</span></label><span class="fl-hint">선택: ${d.target.length}/5</span>${kGrid(targetKws,'target',5)}</div>
+      <div class="fl"><label class="fl-lbl">한 줄로 설명</label><input type="text" id="target-custom" value="${d.targetCustom}" oninput="d.targetCustom=this.value" placeholder="예) 38세, 여성, 퇴사 준비 중인 7년차 HRD 강사" /></div>
+    </div>${nav()}`;
+
   } else if(s.id==='role'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">🏠</div><div><div class="card-ttl">브랜드 역할</div><div class="card-sub">우리는 고객에게 어떤 존재인가 — 1개 선택</div></div></div><div class="guide">역할은 단순한 직업명이 아닙니다. <strong>고객과의 관계</strong>를 정의하는 것이에요. 6개 카테고리로 나뉘어 있어요. 먼저 어떤 방향인지 느낌을 잡고, 직감적으로 <strong>딱 1개</strong>를 골라보세요.</div><div class="ex"><div class="ex-lbl">bestar의 선택</div><div class="ex-txt"><strong>안내자 (Guide)</strong> — @your_road_map처럼, 가야 할 방향을 함께 짚어주는 사람</div></div>${roleAcc()}<div class="fl" style="margin-top:1rem"><label class="fl-lbl">위에 없다면 직접 입력</label><input type="text" value="${d.roleCustom}" oninput="d.roleCustom=this.value" placeholder="나만의 역할 키워드" /></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">🏠</div><div><div class="card-ttl">브랜드 역할</div><div class="card-sub">우리는 고객에게 어떤 존재인가 — 1개 선택</div></div></div>
+      ${thinkBox('role',true)}
+      <div class="ex ex-copy" onclick="copyEx('안내자','role-custom')">
+        <div class="ex-lbl">bestar의 선택 — 클릭하면 아래 입력창에 복사</div>
+        <div class="ex-txt"><strong>안내자 (Guide)</strong> — @your_road_map처럼, 가야 할 방향을 함께 짚어주는 사람</div>
+        <div class="ex-copy-hint">👆 클릭하면 아래 입력창에 복사</div>
+      </div>
+      ${roleAcc()}
+      <div class="fl" style="margin-top:1rem"><label class="fl-lbl">위에 없다면 직접 입력</label><input type="text" id="role-custom" value="${d.roleCustom}" oninput="d.roleCustom=this.value" placeholder="나만의 역할 키워드" /></div>
+    </div>${nav()}`;
+
   } else if(s.id==='benefit'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">✦</div><div><div class="card-ttl">핵심 혜택 Key Benefit</div><div class="card-sub">고객이 실질적으로 얻는 것</div></div></div><div class="guide"><strong>FAB 공식</strong>: Feature(특징) → Advantage(장점) → <strong>Benefit(진짜 혜택)</strong><br>"6회 줌 미팅" → "체계적인 과정" → <strong>"내 브랜드 언어를 스스로 갖게 된다"</strong></div><div class="ex"><div class="ex-lbl">bestar 예시</div><div class="ex-txt"><strong>상품</strong>: 1인기업 브랜드 컨설팅 (6회차)<br><strong>Key Benefit</strong>: 흩어진 경험과 강점이 하나의 브랜드 언어로 수렴되어, 설명 없이도 통하는 포지셔닝을 갖게 됩니다</div></div><div class="fl"><label class="fl-lbl">상품 또는 서비스</label><input type="text" value="${d.product}" oninput="d.product=this.value" placeholder="예) 1인기업 퍼스널브랜딩 컨설팅 6회차" /></div><div class="fl"><label class="fl-lbl">Key Benefit — 고객이 얻는 진짜 변화</label><textarea oninput="d.benefit=this.value" placeholder="예) 막연하게 쌓아온 경력이 선명한 브랜드 스토리가 되어, 설명 없이도 통하는 포지셔닝을 갖게 됩니다">${d.benefit}</textarea></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic b2">✦</div><div><div class="card-ttl">핵심 혜택 Key Benefit</div><div class="card-sub">고객이 실질적으로 얻는 것</div></div></div>
+      ${thinkBox('benefit',true)}
+      <div class="ex ex-copy" onclick="copyEx('흩어진 경험과 강점이 하나의 브랜드 언어로 수렴되어, 설명 없이도 통하는 포지셔닝을 갖게 됩니다','benefit-ta')">
+        <div class="ex-lbl">bestar 예시 — 클릭하면 아래 입력창에 복사</div>
+        <div class="ex-txt"><strong>상품</strong>: 1인기업 브랜드 컨설팅 (6회차)<br><strong>Key Benefit</strong>: 흩어진 경험과 강점이 하나의 브랜드 언어로 수렴되어, 설명 없이도 통하는 포지셔닝을 갖게 됩니다</div>
+        <div class="ex-copy-hint">👆 클릭하면 아래 Key Benefit 입력창에 복사</div>
+      </div>
+      <div class="fl"><label class="fl-lbl">상품 또는 서비스</label><input type="text" value="${d.product}" oninput="d.product=this.value" placeholder="예) 1인기업 퍼스널브랜딩 컨설팅 6회차" /></div>
+      <div class="fl"><label class="fl-lbl">Key Benefit — 고객이 얻는 진짜 변화</label><textarea id="benefit-ta" oninput="d.benefit=this.value" placeholder="예) 막연하게 쌓아온 경력이 선명한 브랜드 스토리가 되어, 설명 없이도 통하는 포지셔닝을 갖게 됩니다">${d.benefit}</textarea></div>
+    </div>${nav()}`;
+
   } else if(s.id==='values'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">💎</div><div><div class="card-ttl">핵심 가치 Core Value</div><div class="card-sub">각 항목에서 3개씩 선택</div></div></div><div class="guide">세 가지 가치가 합쳐져서 <strong>브랜드의 온도와 색깔</strong>이 만들어집니다. 기능(네이비) · 감성(블루) · 퍼스널리티(하늘) — 카테고리별로 색이 달라요.</div><div class="fl"><label class="fl-lbl">기능적 가치 Functional Value <span class="badge" id="badge-fv">${d.fv.length}</span></label><span class="fl-hint">선택: ${d.fv.length}/3 — 실질적으로 제공하는 것</span>${kGrid(fvKws,'fv',3)}</div><div class="divider"></div><div class="fl"><label class="fl-lbl">정서적 가치 Emotional Value <span class="badge" id="badge-ev">${d.ev.length}</span></label><span class="fl-hint">선택: ${d.ev.length}/3 — 고객이 느끼는 감정</span>${kGrid(evKws,'ev',3)}</div><div class="divider"></div><div class="fl"><label class="fl-lbl">퍼스널리티 Personality <span class="badge" id="badge-pv">${d.pv.length}</span></label><span class="fl-hint">선택: ${d.pv.length}/3 — 소통하는 방식과 태도</span>${kGrid(pvKws,'pv',3)}</div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">💎</div><div><div class="card-ttl">핵심 가치 Core Value</div><div class="card-sub">각 항목에서 3개씩 선택</div></div></div>
+      <div class="guide">세 가지 가치가 합쳐져서 <strong>브랜드의 온도와 색깔</strong>이 만들어집니다. 기능(네이비) · 감성(블루) · 퍼스널리티(하늘) — 카테고리별로 색이 달라요.</div>
+      <div class="fl">
+        <label class="fl-lbl">기능적 가치 Functional Value <span class="badge" id="badge-fv">${d.fv.length}</span></label>
+        <span class="fl-hint">선택: ${d.fv.length}/3 — 실질적으로 제공하는 것</span>
+        ${thinkBox('fv',false)}
+        ${kGrid(fvKws,'fv',3)}
+      </div>
+      <div class="divider"></div>
+      <div class="fl">
+        <label class="fl-lbl">정서적 가치 Emotional Value <span class="badge" id="badge-ev">${d.ev.length}</span></label>
+        <span class="fl-hint">선택: ${d.ev.length}/3 — 고객이 느끼는 감정</span>
+        ${thinkBox('ev',false)}
+        ${kGrid(evKws,'ev',3)}
+      </div>
+      <div class="divider"></div>
+      <div class="fl">
+        <label class="fl-lbl">퍼스널리티 Personality <span class="badge" id="badge-pv">${d.pv.length}</span></label>
+        <span class="fl-hint">선택: ${d.pv.length}/3 — 소통하는 방식과 태도</span>
+        ${thinkBox('pv',false)}
+        ${kGrid(pvKws,'pv',3)}
+      </div>
+    </div>${nav()}`;
+
   } else if(s.id==='promise'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">◈</div><div><div class="card-ttl">브랜드 약속 Brand Promise</div><div class="card-sub">고객에게 하는 진심 어린 약속</div></div></div><div class="guide"><strong>"우리와 함께하면 당신의 삶이 이렇게 달라진다"</strong>는 확신을 주는 문장이에요.</div><div style="margin-bottom:1.25rem;padding:12px 16px;background:var(--b6);border-radius:var(--radius);border:1px solid var(--b4);font-size:13px;">선택된 가치: ${[...d.fv,...d.ev,...d.pv].map(v=>`<span class="tag-b">${v}</span>`).join('')||'<span style="color:var(--text3);font-style:italic">4단계에서 선택한 키워드</span>'}</div><div class="fl"><textarea rows="4" oninput="d.promise=this.value" placeholder="예) 당신 안에 이미 있는 강점을 체계적으로 정리해, 설명하지 않아도 통하는 나만의 브랜드 언어를 함께 만들어드립니다.">${d.promise}</textarea></div></div>${nav()}`;
+    const autoT=d.target[0]||d.targetCustom||'';
+    const autoF=d.fv[0]||'';
+    const autoE=d.ev[0]||'';
+    const autoB=cN||'';
+    const autoR=d.role[0]||d.roleCustom||'';
+    const autoP=d.benefit||'';
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic b2">◈</div><div><div class="card-ttl">브랜드 약속 Brand Promise</div><div class="card-sub">고객에게 하는 진심 어린 약속</div></div></div>
+      ${thinkBox('promise',true)}
+      <div class="guide"><strong>"우리와 함께하면 당신의 삶이 이렇게 달라진다"</strong>는 확신을 주는 문장이에요. 아래 템플릿을 채우고 초안 생성 버튼을 눌러보세요.</div>
+      <div style="margin-bottom:1rem;padding:10px 14px;background:var(--b6);border-radius:var(--radius);border:1px solid var(--b4);font-size:12px;">이전 단계 선택: ${[...d.fv,...d.ev,...d.pv].map(v=>`<span class="tag-b">${v}</span>`).join('')||'<span style="color:var(--text3);font-style:italic">앞 단계에서 선택한 가치 키워드가 여기 표시됩니다</span>'}</div>
+      <div class="fill-wrap">
+        <div class="fill-label">Brand Statement 템플릿 — 빈칸을 채우고 초안 생성을 누르세요</div>
+        <div class="fill-row">
+          우리 브랜드는 <input class="fi" id="bs-t" value="${autoT}" placeholder="타겟 고객" />에게
+          <input class="fi" id="bs-f" value="${autoF}" placeholder="기능적 혜택" />와
+          <input class="fi" id="bs-e" value="${autoE}" placeholder="감성적 혜택" />를 제공하기 위해
+          <input class="fi" id="bs-b" value="${autoB}" placeholder="브랜드명" />로서
+          <input class="fi" id="bs-r" value="${autoR}" placeholder="역할" /> 역할을 수행하며
+          <input class="fi" id="bs-p" value="${autoP}" placeholder="핵심 약속" style="min-width:140px" />을 약속합니다
+        </div>
+        <button class="gen-btn" onclick="genPromise()">✦ 초안 생성하기</button>
+      </div>
+      <div class="fl"><label class="fl-lbl">브랜드 약속 (초안을 수정하거나 직접 입력)</label><textarea id="promise-ta" rows="4" oninput="d.promise=this.value" placeholder="예) 당신 안에 이미 있는 강점을 체계적으로 정리해, 설명하지 않아도 통하는 나만의 브랜드 언어를 함께 만들어드립니다.">${d.promise}</textarea></div>
+    </div>${nav()}`;
+
   } else if(s.id==='slogan'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">★</div><div><div class="card-ttl">브랜드 슬로건</div><div class="card-sub">브랜드를 한 문장으로</div></div></div><div class="guide">인스타 바이오, 홈페이지 헤드라인에 들어갈 <strong>가장 짧고 강한 한 문장</strong>입니다.</div><div class="ex"><div class="ex-lbl">bestar 스타일 예시</div><div class="ex-txt">"당신 안의 강점을, 세상이 알아보는 언어로" · "설명하지 않아도 통하는 브랜드 만들기"</div></div><div class="fl"><input type="text" value="${d.slogan}" oninput="d.slogan=this.value" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" /></div></div>${mode==='brand'?nav('완성 보기 →'):nav('콘텐츠 하우스로 →')}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">★</div><div><div class="card-ttl">브랜드 슬로건 & 메시지</div><div class="card-sub">브랜드를 한 문장으로</div></div></div>
+      ${thinkBox('slogan',true)}
+      <div class="guide">인스타 바이오, 홈페이지 헤드라인에 들어갈 <strong>가장 짧고 강한 한 문장</strong>입니다.</div>
+      <div class="fl">
+        <label class="fl-lbl">Brand Concept — 나는 ___가 아니라 ___를 판다</label>
+        <span class="fl-hint">이 문장이 완성되면 슬로건의 방향이 보입니다</span>
+        <div class="concept-box">
+          나는 <input class="ci" value="${d.bsConcept1}" oninput="d.bsConcept1=this.value" placeholder="기능·제품명" />가 아니라 <input class="ci" value="${d.bsConcept2}" oninput="d.bsConcept2=this.value" placeholder="진짜 가치" />를 판다
+        </div>
+      </div>
+      <div class="fl">
+        <label class="fl-lbl">Brand Message — 고객에게 전하고 싶은 진심</label>
+        <span class="fl-hint">큰따옴표 안에 한 문장으로</span>
+        <div class="msg-box">
+          <span class="msg-quote">"</span>
+          <input class="mi" value="${d.brandMsg}" oninput="d.brandMsg=this.value" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" />
+          <span class="msg-quote">"</span>
+        </div>
+      </div>
+      <div class="fl">
+        <label class="fl-lbl">슬로건 (최종)</label>
+        <div class="ex ex-copy" onclick="copyEx('당신 안의 강점을, 세상이 알아보는 언어로','slogan-input')" style="margin-bottom:8px">
+          <div class="ex-lbl">bestar 스타일 예시 — 클릭하면 복사</div>
+          <div class="ex-txt">"당신 안의 강점을, 세상이 알아보는 언어로" · "설명하지 않아도 통하는 브랜드 만들기"</div>
+          <div class="ex-copy-hint">👆 클릭하면 아래 입력창에 복사</div>
+        </div>
+        <input type="text" id="slogan-input" value="${d.slogan}" oninput="d.slogan=this.value" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" />
+      </div>
+    </div>${mode==='brand'?nav('완성 보기 →'):nav('콘텐츠 하우스로 →')}`;
+
   } else if(s.id==='brand_result'){
     el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">🏠</div><div><div class="card-ttl">브랜드 하우스 완성</div><div class="card-sub">${cN||'클라이언트'}</div></div></div>${renderBH()}</div>${mode==='both'?nav('콘텐츠 하우스로 →'):nav(null,true)}`;
+
   } else if(s.id==='identity'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">▲</div><div><div class="card-ttl">정체성 Identity</div><div class="card-sub">지붕 — 팔로우해야 할 단 하나의 이유</div></div></div><div class="guide"><strong>강점 + 사회적 쓸모가 결합된 유일무이한 타이틀</strong>이어야 해요. "강사"보다 "학습경험 설계자", "코치"보다 "브랜드 언어 안내자"처럼 동사적으로.</div><div class="fl"><label class="fl-lbl">나만의 타이틀</label><input type="text" value="${d.identity}" oninput="d.identity=this.value" placeholder="예) 1인기업 브랜드 언어 설계자" /></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic b2">▲</div><div><div class="card-ttl">정체성 Identity</div><div class="card-sub">지붕 — 팔로우해야 할 단 하나의 이유</div></div></div>
+      ${thinkBox('identity',true)}
+      <div class="ex ex-copy" onclick="copyEx('1인기업 브랜드 언어 설계자','identity-input')">
+        <div class="ex-lbl">bestar 예시 — 클릭하면 복사</div>
+        <div class="ex-txt">1인기업 브랜드 언어 설계자</div>
+        <div class="ex-copy-hint">👆 클릭하면 아래 입력창에 복사</div>
+      </div>
+      <div class="fl"><label class="fl-lbl">나만의 타이틀</label><input type="text" id="identity-input" value="${d.identity}" oninput="d.identity=this.value" placeholder="예) 1인기업 브랜드 언어 설계자" /></div>
+    </div>${nav()}`;
+
   } else if(s.id==='authority'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">📊</div><div><div class="card-ttl">권위의 증거 Authority</div><div class="card-sub">3초 만에 신뢰를 만드는 숫자</div></div></div><div class="guide">말이 아닌 <strong>숫자와 사실</strong>로 신뢰를 만드세요. "오래 했어요" ❌ → "7년, 200건" ✅</div><div class="fl"><label class="fl-lbl">규모 Scale</label><input type="text" value="${d.scale}" oninput="d.scale=this.value" placeholder="예) 컨설팅 클라이언트 100명+" /></div><div class="fl"><label class="fl-lbl">경력 Time</label><input type="text" value="${d.time}" oninput="d.time=this.value" placeholder="예) 브랜딩 컨설팅 7년" /></div><div class="fl"><label class="fl-lbl">성과 Performance</label><input type="text" value="${d.perf}" oninput="d.perf=this.value" placeholder="예) 수강생 브랜드 전환율 3배" /></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">📊</div><div><div class="card-ttl">권위의 증거 Authority</div><div class="card-sub">3초 만에 신뢰를 만드는 숫자</div></div></div>
+      ${thinkBox('authority',true)}
+      <div class="fl"><label class="fl-lbl">규모 Scale</label><input type="text" value="${d.scale}" oninput="d.scale=this.value" placeholder="예) 컨설팅 클라이언트 100명+" /></div>
+      <div class="fl"><label class="fl-lbl">경력 Time</label><input type="text" value="${d.time}" oninput="d.time=this.value" placeholder="예) 브랜딩 컨설팅 7년" /></div>
+      <div class="fl"><label class="fl-lbl">성과 Performance</label><input type="text" value="${d.perf}" oninput="d.perf=this.value" placeholder="예) 수강생 브랜드 전환율 3배" /></div>
+    </div>${nav()}`;
+
   } else if(s.id==='pillars'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">🏗</div><div><div class="card-ttl">기둥 Pillars</div><div class="card-sub">모든 콘텐츠를 관통하는 나만의 필터</div></div></div><div class="fl"><label class="fl-lbl">방식/시선 Method</label><textarea oninput="d.method=this.value" placeholder="예) 강점 기반으로 정체성을 먼저 잡고, 콘텐츠 구조를 뒤에 얹는 방식">${d.method}</textarea></div><div class="fl"><label class="fl-lbl">태도/소통 Attitude</label><textarea oninput="d.attitude=this.value" placeholder="예) 돌려 말하지 않고 핵심을 짚어주되, 클라이언트 언어를 먼저 듣는 태도">${d.attitude}</textarea></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">🏗</div><div><div class="card-ttl">기둥 Pillars</div><div class="card-sub">모든 콘텐츠를 관통하는 나만의 필터</div></div></div>
+      ${thinkBox('pillars',true)}
+      <div class="fl"><label class="fl-lbl">방식/시선 Method</label><textarea oninput="d.method=this.value" placeholder="예) 강점 기반으로 정체성을 먼저 잡고, 콘텐츠 구조를 뒤에 얹는 방식">${d.method}</textarea></div>
+      <div class="fl"><label class="fl-lbl">태도/소통 Attitude</label><textarea oninput="d.attitude=this.value" placeholder="예) 돌려 말하지 않고 핵심을 짚어주되, 클라이언트 언어를 먼저 듣는 태도">${d.attitude}</textarea></div>
+    </div>${nav()}`;
+
   } else if(s.id==='core'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">◈</div><div><div class="card-ttl">콘텐츠 영역 Core</div><div class="card-sub">피드에 올라갈 두 개의 핵심 축</div></div></div><div class="fl"><label class="fl-lbl">실력 Expertise</label><textarea oninput="d.expertise=this.value" placeholder="예) 브랜딩 케이스 스터디, 클라이언트 비포&애프터">${d.expertise}</textarea></div><div class="fl"><label class="fl-lbl">매력 Humanity</label><textarea oninput="d.humanity=this.value" placeholder="예) 1인기업 운영 이야기, 브랜딩 철학">${d.humanity}</textarea></div></div>${nav()}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic b2">◈</div><div><div class="card-ttl">콘텐츠 영역 Core</div><div class="card-sub">피드에 올라갈 두 개의 핵심 축</div></div></div>
+      ${thinkBox('core',true)}
+      <div class="fl"><label class="fl-lbl">실력 Expertise</label><textarea oninput="d.expertise=this.value" placeholder="예) 브랜딩 케이스 스터디, 클라이언트 비포&amp;애프터">${d.expertise}</textarea></div>
+      <div class="fl"><label class="fl-lbl">매력 Humanity</label><textarea oninput="d.humanity=this.value" placeholder="예) 1인기업 운영 이야기, 브랜딩 철학">${d.humanity}</textarea></div>
+    </div>${nav()}`;
+
   } else if(s.id==='foundation'){
-    el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic">🧱</div><div><div class="card-ttl">토대 Foundation</div><div class="card-sub">이 모든 집이 지어지는 땅</div></div></div><div class="fl"><label class="fl-lbl">꿈의 고객 Dream Customer</label><textarea oninput="d.dream=this.value" placeholder="예) 실력은 있는데 브랜드가 없어서 소개로만 일하는 5년차 1인 코치">${d.dream}</textarea></div><div class="fl"><label class="fl-lbl">약속 Value</label><textarea oninput="d.value=this.value" placeholder="예) 막연했던 정체성이 선명해지고, 설명 없이도 찾아오는 고객과 일하게 된다">${d.value}</textarea></div></div>${nav('완성 보기 →')}`;
+    el.innerHTML=`<div class="card">
+      <div class="card-hd"><div class="card-ic">🧱</div><div><div class="card-ttl">토대 Foundation</div><div class="card-sub">이 모든 집이 지어지는 땅</div></div></div>
+      ${thinkBox('foundation',true)}
+      <div class="fl"><label class="fl-lbl">꿈의 고객 Dream Customer</label><textarea oninput="d.dream=this.value" placeholder="예) 실력은 있는데 브랜드가 없어서 소개로만 일하는 5년차 1인 코치">${d.dream}</textarea></div>
+      <div class="fl"><label class="fl-lbl">약속 Value</label><textarea oninput="d.value=this.value" placeholder="예) 막연했던 정체성이 선명해지고, 설명 없이도 찾아오는 고객과 일하게 된다">${d.value}</textarea></div>
+    </div>${nav('완성 보기 →')}`;
+
   } else if(s.id==='content_result'){
     el.innerHTML=`<div class="card"><div class="card-hd"><div class="card-ic b2">🏠</div><div><div class="card-ttl">콘텐츠 하우스 완성</div><div class="card-sub">${cN||'클라이언트'}</div></div></div>${renderCH()}</div>${nav(null,true)}`;
   }
@@ -357,6 +640,7 @@ function renderBH(){
     </div>
   </div>`;
 }
+
 function renderCH(){
   return `<div class="bh-wrap">
     <div class="bh-roof"><svg viewBox="0 0 800 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
