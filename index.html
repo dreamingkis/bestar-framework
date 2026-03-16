@@ -252,9 +252,9 @@ function roleAcc(){
     return `<div class="acc">
       <div class="acc-hd" onclick="toggleAcc(this)">
         <span class="acc-title">${cat.icon} ${cat.cat}</span>
-        <div class="acc-meta">${selInCat.length>0?`<span class="acc-count">${selInCat.length}개 선택</span>`:''}<span class="acc-arrow ${isOpen?'open'}">▼</span></div>
+        <div class="acc-meta">${selInCat.length>0?`<span class="acc-count">${selInCat.length}개 선택</span>`:''}<span class="acc-arrow ${isOpen?'open':''}">▼</span></div>
       </div>
-      <div class="acc-body ${isOpen?'open'}">
+      <div class="acc-body ${isOpen?'open':''}">
         <div class="kw-grid">${cat.items.map(k=>{
           const sel=d.role.includes(k.kr)?'1':'0';
           const safe=k.kr.replace(/'/g,"\\'");
