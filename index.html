@@ -345,9 +345,9 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
       <input type="text" id="ai-worker-input" placeholder="https://bestar-api.xxxxx.workers.dev" oninput="saveAISettings()" />
     </div>
     <div class="fl">
-      <label class="fl-lbl">OpenAI API Key (Worker 없을 때)</label>
-      <span class="fl-hint">Worker가 없으면 직접 API 키를 입력하세요. <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--c2)">키 발급받기 →</a></span>
-      <input type="password" id="ai-key-input" placeholder="sk-..." oninput="saveAISettings()" />
+      <label class="fl-lbl">Gemini API Key (Worker 없을 때)</label>
+      <span class="fl-hint">Worker가 없으면 직접 API 키를 입력하세요. <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--c2)">무료 키 발급받기 →</a></span>
+      <input type="password" id="ai-key-input" placeholder="AIza..." oninput="saveAISettings()" />
     </div>
     <div class="fl">
       <label class="fl-lbl">코칭 데이터 (Worker 없을 때 수동 입력)</label>
@@ -993,8 +993,8 @@ async function callAI(userPrompt){
     return data.result;
   }
 
-  // Worker 없으면 직접 OpenAI API 호출
-  if(!aiKey){openSettings();throw new Error('Worker URL 또는 API 키를 설정해주세요.');}
+  // Worker 없으면 직접 Gemini API 호출
+  if(!aiKey){openSettings();throw new Error('Worker URL 또는 Gemini API 키를 설정해주세요.');}
   const systemPrompt=`당신은 bestar 브랜딩 워크숍의 AI 어시스턴트입니다.
 김인숙 컨설턴트의 강점 기반 브랜드 전략 방법론을 사용합니다.
 
@@ -1009,25 +1009,18 @@ async function callAI(userPrompt){
 ${workshopData||'(아직 입력된 데이터가 없습니다)'}
 ${coachingCtx?`\n코칭 노트/배경 정보:\n${coachingCtx}`:''}`;
 
-  const resp=await fetch('https://api.openai.com/v1/chat/completions',{
+  const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${aiKey}`,{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':`Bearer ${aiKey}`
-    },
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      model:'gpt-4o-mini',
-      max_tokens:1024,
-      temperature:0.8,
-      messages:[
-        {role:'system',content:systemPrompt},
-        {role:'user',content:userPrompt}
-      ]
+      system_instruction:{parts:[{text:systemPrompt}]},
+      contents:[{parts:[{text:userPrompt}]}],
+      generationConfig:{temperature:0.8,maxOutputTokens:1024}
     })
   });
-  if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`API 오류 (${resp.status})`);}
+  if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`Gemini API 오류 (${resp.status})`);}
   const data=await resp.json();
-  return data.choices[0].message.content;
+  return data.candidates[0].content.parts[0].text;
 }
 
 // ── 노션 고객 데이터 자동 불러오기 (Worker 필요) ──

@@ -1,5 +1,5 @@
 // bestar-api Cloudflare Worker
-// AI 생성 (OpenAI) + Notion 클라이언트 데이터 자동 연동
+// AI 생성 (Gemini) + Notion 클라이언트 데이터 자동 연동
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -21,32 +21,31 @@ function json(data, status = 200, env = {}) {
   });
 }
 
-// ── OpenAI API 호출 ──
-async function callOpenAI(systemPrompt, userPrompt, env) {
-  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      max_tokens: 1024,
-      temperature: 0.8,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-    }),
-  });
+// ── Gemini API 호출 ──
+async function callGemini(systemPrompt, userPrompt, env) {
+  const resp = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ parts: [{ text: userPrompt }] }],
+        generationConfig: {
+          temperature: 0.8,
+          maxOutputTokens: 1024,
+        },
+      }),
+    }
+  );
 
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));
-    throw new Error(err.error?.message || `OpenAI API error (${resp.status})`);
+    throw new Error(err.error?.message || `Gemini API error (${resp.status})`);
   }
 
   const data = await resp.json();
-  return data.choices[0].message.content;
+  return data.candidates[0].content.parts[0].text;
 }
 
 // ── Notion API 호출 ──
@@ -270,7 +269,7 @@ export default {
 ${workshopData || '(아직 입력된 데이터가 없습니다)'}
 ${coachingCtx ? `\n코칭 노트/배경 정보:\n${coachingCtx}` : ''}`;
 
-        const result = await callOpenAI(systemPrompt, prompt, env);
+        const result = await callGemini(systemPrompt, prompt, env);
         return json({ result }, 200, env);
       }
 
