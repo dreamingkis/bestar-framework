@@ -284,6 +284,29 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
     -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
   }
 }
+/* ── AI 기능 ── */
+.ai-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border: 2px solid var(--c2); border-radius: var(--radius); background: var(--bg); color: var(--c2); font-size: 13px; font-family: inherit; cursor: pointer; font-weight: 700; transition: all 0.12s; }
+.ai-btn:hover { background: var(--c2); color: #fff; }
+.ai-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-btn.loading .ai-spin { display: inline-block; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ai-suggestions { margin-top: 10px; }
+.ai-sug-card { padding: 12px 16px; border: 1.5px solid var(--c4); border-radius: var(--radius); margin-bottom: 6px; cursor: pointer; transition: all 0.12s; background: var(--c6); }
+.ai-sug-card:hover { border-color: var(--c2); background: var(--c5); }
+.ai-sug-label { font-size: 11px; font-weight: 700; color: var(--c2); margin-bottom: 4px; }
+.ai-sug-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+.ai-sug-hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.ai-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+/* Settings modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--bg); border-radius: var(--radius-lg); max-width: 560px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 1.75rem; }
+.modal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.modal-ttl { font-size: 18px; font-weight: 900; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text3); padding: 4px; }
+.modal-close:hover { color: var(--text); }
+.top-settings { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); font-size: 13px; padding: 4px 10px; border-radius: var(--radius); cursor: pointer; font-family: inherit; white-space: nowrap; }
+.top-settings:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
 /* ── 인트로 ── */
 .intro-center { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
 /* ── 완성 화면 클릭 수정 ── */
@@ -298,6 +321,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
   <div class="top-bar-right">
     <label>Brand</label>
     <input type="text" id="cn" placeholder="브랜드명..." oninput="cN=this.value;saveData()" />
+    <button class="top-settings" onclick="openSettings()">AI 설정</button>
     <button class="top-reset" onclick="resetAll()">초기화</button>
   </div>
 </div>
@@ -308,6 +332,25 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
   <div>
     <div class="mobile-step" id="mobile-step"></div>
     <div class="main" id="sc"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-hd"><span class="modal-ttl">AI 설정</span><button class="modal-close" onclick="closeSettings()">&times;</button></div>
+    <div class="fl">
+      <label class="fl-lbl">Anthropic API Key</label>
+      <span class="fl-hint">AI 추천 기능을 사용하려면 Anthropic API 키가 필요합니다. <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--c2)">키 발급받기 →</a></span>
+      <input type="password" id="ai-key-input" placeholder="sk-ant-..." oninput="saveAISettings()" />
+    </div>
+    <div class="fl">
+      <label class="fl-lbl">코칭 데이터 (선택사항)</label>
+      <span class="fl-hint">노션의 코칭 노트, 심화질문지 답변 등을 붙여넣으세요. AI가 이 맥락을 참고하여 더 정확한 브랜드 결과물을 생성합니다.</span>
+      <textarea id="ai-ctx-input" rows="8" placeholder="예) 고객명: 김서인&#10;분야: 초등교육, 독서&#10;강점: 강의력, 교육 프로그램 기획&#10;목표: 교육사업 브랜딩&#10;핵심 고민: 브랜드 방향성 잡기&#10;&#10;코칭 노트나 심화질문지 내용을 여기에 붙여넣으세요..." oninput="saveAISettings()"></textarea>
+    </div>
+    <div style="text-align:right;margin-top:1rem">
+      <button class="btn-n" onclick="closeSettings()" style="padding:11px 28px;font-size:14px">저장 후 닫기</button>
+    </div>
   </div>
 </div>
 
@@ -735,7 +778,9 @@ function renderStep(){
         ${[...d.fv,...d.ev,...d.pv].map(v=>`<span class="tag-b">${v}</span>`).join('')||'<span style="color:var(--text3);font-style:italic;font-size:13px">앞 단계에서 선택한 키워드가 여기에 표시됩니다</span>'}
       </div>
       <div class="fill-wrap"><span class="fill-lbl">Brand Statement 템플릿</span><div class="fill-row">우리 브랜드는 <input class="fi" id="bs-t" value="${autoT}" placeholder="타겟" />에게 <input class="fi" id="bs-f" value="${autoF}" placeholder="기능적 혜택" />와 <input class="fi" id="bs-e" value="${autoE}" placeholder="감성적 혜택" />를 제공하기 위해 <input class="fi" id="bs-b" value="${cN}" placeholder="브랜드명" />로서 <input class="fi" id="bs-r" value="${autoR}" placeholder="역할" /> 역할을 수행하며 <input class="fi" id="bs-p" value="${d.benefit}" placeholder="핵심 약속" style="min-width:140px" />을 약속합니다</div><button class="gen-btn" onclick="genPromise()">✦ 초안 생성하기</button></div>
-      <div class="fl"><label class="fl-lbl">브랜드 약속 (초안을 수정하거나 직접 입력)</label><textarea id="promise-ta" rows="4" oninput="d.promise=this.value;saveData()" placeholder="예) 당신 안에 이미 있는 강점을 체계적으로 정리해, 설명하지 않아도 통하는 나만의 브랜드 언어를 함께 만들어드립니다.">${d.promise}</textarea></div>
+      <div class="fl"><label class="fl-lbl">브랜드 약속 (초안을 수정하거나 직접 입력)</label><textarea id="promise-ta" rows="4" oninput="d.promise=this.value;saveData()" placeholder="예) 당신 안에 이미 있는 강점을 체계적으로 정리해, 설명하지 않아도 통하는 나만의 브랜드 언어를 함께 만들어드립니다.">${d.promise}</textarea>
+      <div class="ai-row"><button class="ai-btn" id="ai-btn-promise" onclick="aiPromise()">✦ AI 추천</button><span style="font-size:12px;color:var(--text3)">워크숍 데이터 + 코칭 노트 기반</span></div>
+      <div class="ai-suggestions" id="ai-sug-promise"></div></div>
     </div>${nav()}`;
 
   } else if(s.id==='slogan'){
@@ -743,9 +788,15 @@ function renderStep(){
       <div class="card-hd"><div class="card-ic">★</div><div><div class="card-ttl">슬로건 & 브랜드 메시지</div><div class="card-sub">브랜드를 한 문장으로</div></div></div>
       ${dialogBox('slogan',true)}
       <div class="guide"><strong>Brand Concept</strong>부터 시작하세요. "나는 ___가 아니라 ___를 판다"가 완성되면 슬로건의 방향이 선명해집니다.</div>
-      <div class="fl"><label class="fl-lbl">Brand Concept</label><div class="concept-box">나는 <input class="ci" value="${d.bsConcept1}" oninput="d.bsConcept1=this.value;saveData()" placeholder="기능·제품명" />가 아니라 <input class="ci" value="${d.bsConcept2}" oninput="d.bsConcept2=this.value;saveData()" placeholder="진짜 가치" />를 판다</div></div>
-      <div class="fl"><label class="fl-lbl">Brand Message</label><div class="msg-box"><span class="msg-quote">"</span><input class="mi" value="${d.brandMsg}" oninput="d.brandMsg=this.value;saveData()" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" /><span class="msg-quote">"</span></div></div>
-      <div class="fl"><label class="fl-lbl">슬로건 (최종)</label><span class="fl-hint">10초 안에 기억될 한 문장. 짧고 강렬할수록 좋습니다.</span><div class="ex ex-copy" onclick="copyEx('당신 안의 강점을, 세상이 알아보는 언어로','slogan-input')" style="margin-bottom:10px"><div class="ex-lbl">bestar 예시 — 클릭하면 복사</div><div class="ex-txt">"당신 안의 강점을, 세상이 알아보는 언어로"</div><div class="ex-copy-hint">▲ 클릭하면 복사</div></div><input type="text" id="slogan-input" value="${d.slogan}" oninput="d.slogan=this.value;saveData()" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" /></div>
+      <div class="fl"><label class="fl-lbl">Brand Concept</label><div class="concept-box">나는 <input class="ci" value="${d.bsConcept1}" oninput="d.bsConcept1=this.value;saveData()" placeholder="기능·제품명" />가 아니라 <input class="ci" value="${d.bsConcept2}" oninput="d.bsConcept2=this.value;saveData()" placeholder="진짜 가치" />를 판다</div>
+      <div class="ai-row"><button class="ai-btn" id="ai-btn-concept" onclick="aiConcept()">✦ AI 추천</button></div>
+      <div class="ai-suggestions" id="ai-sug-concept"></div></div>
+      <div class="fl"><label class="fl-lbl">Brand Message</label><div class="msg-box"><span class="msg-quote">"</span><input class="mi" value="${d.brandMsg}" oninput="d.brandMsg=this.value;saveData()" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" /><span class="msg-quote">"</span></div>
+      <div class="ai-row"><button class="ai-btn" id="ai-btn-message" onclick="aiMessage()">✦ AI 추천</button></div>
+      <div class="ai-suggestions" id="ai-sug-message"></div></div>
+      <div class="fl"><label class="fl-lbl">슬로건 (최종)</label><span class="fl-hint">10초 안에 기억될 한 문장. 짧고 강렬할수록 좋습니다.</span><div class="ex ex-copy" onclick="copyEx('당신 안의 강점을, 세상이 알아보는 언어로','slogan-input')" style="margin-bottom:10px"><div class="ex-lbl">bestar 예시 — 클릭하면 복사</div><div class="ex-txt">"당신 안의 강점을, 세상이 알아보는 언어로"</div><div class="ex-copy-hint">▲ 클릭하면 복사</div></div><input type="text" id="slogan-input" value="${d.slogan}" oninput="d.slogan=this.value;saveData()" placeholder="예) 당신 안의 강점을, 세상이 알아보는 언어로" />
+      <div class="ai-row"><button class="ai-btn" id="ai-btn-slogan" onclick="aiSlogan()">✦ AI 추천</button></div>
+      <div class="ai-suggestions" id="ai-sug-slogan"></div></div>
     </div>${nav('Brand House 완성 →')}`;
 
   } else if(s.id==='brand_result'){
@@ -870,6 +921,227 @@ function renderCH(){
   </div>`;
 }
 
+/* ── AI 기능 ── */
+let aiKey='', coachingCtx='';
+function loadAISettings(){
+  try{const s=localStorage.getItem('bestar-ai');if(s){const p=JSON.parse(s);aiKey=p.apiKey||'';coachingCtx=p.coachingCtx||'';}}catch(e){}
+}
+function saveAISettings(){
+  aiKey=document.getElementById('ai-key-input').value.trim();
+  coachingCtx=document.getElementById('ai-ctx-input').value;
+  try{localStorage.setItem('bestar-ai',JSON.stringify({apiKey:aiKey,coachingCtx}));}catch(e){}
+}
+function openSettings(){
+  loadAISettings();
+  document.getElementById('ai-key-input').value=aiKey;
+  document.getElementById('ai-ctx-input').value=coachingCtx;
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+
+function getWorkshopContext(){
+  const parts=[];
+  if(cN) parts.push(`브랜드명: ${cN}`);
+  if(d.target.length) parts.push(`타겟 유형: ${d.target.join(', ')}`);
+  if(d.targetCustom) parts.push(`타겟 설명: ${d.targetCustom}`);
+  if(d.role.length) parts.push(`브랜드 역할: ${d.role.join(', ')}`);
+  if(d.roleCustom) parts.push(`역할 직접입력: ${d.roleCustom}`);
+  if(d.product) parts.push(`상품/서비스: ${d.product}`);
+  if(d.benefit) parts.push(`핵심 혜택: ${d.benefit}`);
+  if(d.fv.length) parts.push(`기능적 가치: ${d.fv.join(', ')}`);
+  if(d.ev.length) parts.push(`정서적 가치: ${d.ev.join(', ')}`);
+  if(d.pv.length) parts.push(`퍼스널리티: ${d.pv.join(', ')}`);
+  if(d.promise) parts.push(`브랜드 약속: ${d.promise}`);
+  if(d.slogan) parts.push(`슬로건: ${d.slogan}`);
+  if(d.bsConcept1||d.bsConcept2) parts.push(`브랜드 컨셉: 나는 ${d.bsConcept1||'___'}가 아니라 ${d.bsConcept2||'___'}를 판다`);
+  if(d.brandMsg) parts.push(`브랜드 메시지: ${d.brandMsg}`);
+  if(d.identity) parts.push(`정체성: ${d.identity}`);
+  if(d.dream) parts.push(`꿈의 고객: ${d.dream}`);
+  if(d.value) parts.push(`고객에게 주는 약속: ${d.value}`);
+  // 대화형 가이드 답변도 포함
+  const dqKeys=Object.keys(d.dq).filter(k=>d.dq[k]);
+  if(dqKeys.length){
+    parts.push('\n대화형 가이드 답변:');
+    dqKeys.forEach(k=>{const label=k.replace(/_/g,' Q');parts.push(`  ${label}: ${d.dq[k]}`);});
+  }
+  return parts.join('\n');
+}
+
+async function callAI(userPrompt){
+  loadAISettings();
+  if(!aiKey){openSettings();throw new Error('API 키를 먼저 설정해주세요.');}
+  const workshopData=getWorkshopContext();
+  const systemPrompt=`당신은 bestar 브랜딩 워크숍의 AI 어시스턴트입니다.
+김인숙 컨설턴트의 강점 기반 브랜드 전략 방법론을 사용합니다.
+
+핵심 원칙:
+- 브랜드는 제품이 아니라 '고객의 변화'를 판다
+- 강점에서 출발하여 브랜드 언어를 설계한다
+- Brand House: 타겟 → 역할 → 혜택 → 가치 → 약속 → 슬로건
+- 짧고 강렬하며, 한국어 자연스럽게. 마케팅 용어 남발 금지.
+- 고객의 실제 데이터와 맥락에 기반한 맞춤형 결과물을 만든다.
+
+현재 워크숍 데이터:
+${workshopData||'(아직 입력된 데이터가 없습니다)'}
+${coachingCtx?`\n코칭 노트/배경 정보:\n${coachingCtx}`:''}`;
+
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':aiKey,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1024,
+      system:systemPrompt,
+      messages:[{role:'user',content:userPrompt}]
+    })
+  });
+  if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`API 오류 (${resp.status})`);}
+  const data=await resp.json();
+  return data.content[0].text;
+}
+
+async function aiGenerate(field,prompt,containerId,btnEl){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  btnEl.disabled=true;
+  btnEl.classList.add('loading');
+  const origText=btnEl.innerHTML;
+  btnEl.innerHTML='<span class="ai-spin">↻</span> 생성 중...';
+  container.innerHTML='<div style="padding:12px;color:var(--text3);font-size:13px">AI가 추천 문구를 생성하고 있습니다...</div>';
+  try{
+    const raw=await callAI(prompt);
+    // Parse numbered suggestions: 1. ... 2. ... 3. ...
+    const suggestions=[];
+    const lines=raw.split('\n').filter(l=>l.trim());
+    let current='';
+    for(const line of lines){
+      const m=line.match(/^\d+[\.\)]\s*(.+)/);
+      if(m){if(current)suggestions.push(current.trim());current=m[1];}
+      else if(current){current+=' '+line.trim();}
+    }
+    if(current)suggestions.push(current.trim());
+    if(!suggestions.length)suggestions.push(raw.trim());
+    container.innerHTML=suggestions.map((s,i)=>{
+      // Brand Concept 특별 처리: "A → B" 또는 "A|B" 형태
+      if(field==='concept'){
+        const parts=s.split(/[→|]/);
+        if(parts.length>=2){
+          const a=parts[0].replace(/["""*]/g,'').trim();
+          const b=parts[1].replace(/["""*]/g,'').trim();
+          return `<div class="ai-sug-card" onclick="applyAIConcept('${a.replace(/'/g,"\\'")}','${b.replace(/'/g,"\\'")}')"><div class="ai-sug-label">추천 ${i+1}</div><div class="ai-sug-text">나는 <strong>${a}</strong>가 아니라 <strong>${b}</strong>를 판다</div></div>`;
+        }
+      }
+      const clean=s.replace(/^[""]|[""]$/g,'').replace(/\*\*/g,'').trim();
+      return `<div class="ai-sug-card" onclick="applyAI('${field}','${clean.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"><div class="ai-sug-label">추천 ${i+1}</div><div class="ai-sug-text">${clean}</div><div class="ai-sug-hint">클릭하면 적용</div></div>`;
+    }).join('');
+  }catch(e){
+    container.innerHTML=`<div style="padding:12px;color:#e53e3e;font-size:13px">${e.message}</div>`;
+  }
+  btnEl.disabled=false;
+  btnEl.classList.remove('loading');
+  btnEl.innerHTML=origText;
+}
+
+function applyAI(field,value){
+  const fieldMap={
+    'promise':{dataKey:'promise',inputId:'promise-ta'},
+    'slogan':{dataKey:'slogan',inputId:'slogan-input'},
+    'brandMsg':{dataKey:'brandMsg',inputId:null},
+    'concept':{dataKey:null,inputId:null}
+  };
+  const m=fieldMap[field];
+  if(m&&m.dataKey){d[m.dataKey]=value;saveData();}
+  if(m&&m.inputId){const el=document.getElementById(m.inputId);if(el){el.value=value;el.style.borderColor='var(--c2)';setTimeout(()=>{el.style.borderColor='';},1500);}}
+  // Brand Message: 특수 처리 (mi class input)
+  if(field==='brandMsg'){d.brandMsg=value;saveData();const el=document.querySelector('.mi');if(el){el.value=value;el.style.borderColor='var(--c2)';setTimeout(()=>{el.style.borderColor='';},1500);}}
+}
+function applyAIConcept(a,b){
+  d.bsConcept1=a;d.bsConcept2=b;saveData();
+  const el1=document.querySelector('.concept-box .ci:first-of-type');
+  const el2=document.querySelector('.concept-box .ci:last-of-type');
+  if(el1)el1.value=a;if(el2)el2.value=b;
+  [el1,el2].forEach(el=>{if(el){el.style.borderBottomColor='var(--c3)';setTimeout(()=>{el.style.borderBottomColor='';},1500);}});
+}
+
+function aiPromise(){
+  const prompt=`현재 워크숍에 입력된 타겟, 역할, 혜택, 가치 데이터를 바탕으로 Brand Promise(브랜드 약속)를 3개 추천해주세요.
+
+Brand Promise란: 고객에게 하는 진심 어린 약속. "우리와 함께하면 당신의 삶이 이렇게 변합니다"를 전달.
+
+조건:
+- 고객의 실제 데이터에 맞춤화
+- 1~2문장, 자연스러운 한국어
+- 추상적이지 않고 구체적인 변화를 담을 것
+- 감성 + 실용을 균형 있게
+- 번호만 붙여서 3개를 제시 (다른 설명 없이)
+
+형식:
+1. [약속 문장]
+2. [약속 문장]
+3. [약속 문장]`;
+  aiGenerate('promise',prompt,'ai-sug-promise',document.getElementById('ai-btn-promise'));
+}
+
+function aiConcept(){
+  const prompt=`Brand Concept을 3개 추천해주세요.
+형식: "나는 A가 아니라 B를 판다"
+A = 겉으로 보이는 기능/서비스명 (예: 컨설팅, 강의, 코칭)
+B = 고객이 실제로 얻는 변화/가치 (예: 선명한 방향, 흔들리지 않는 자신감)
+
+조건:
+- 워크숍 데이터와 코칭 노트를 참고하여 맞춤화
+- 짧고 임팩트 있게
+- 번호만 붙여서 3개 제시, A→B 형식으로
+
+형식:
+1. A → B
+2. A → B
+3. A → B`;
+  aiGenerate('concept',prompt,'ai-sug-concept',document.getElementById('ai-btn-concept'));
+}
+
+function aiMessage(){
+  const prompt=`Brand Message를 3개 추천해주세요.
+Brand Message = 고객에게 전하고 싶은 브랜드의 진심을 담은 한 문장.
+인용구처럼, 마음에 남는 한 줄.
+
+조건:
+- 워크숍 데이터 기반 맞춤화
+- 15자 내외의 짧고 강렬한 문장
+- 시적이면서도 명확한 메시지
+- 번호만 붙여서 3개 (따옴표 없이)
+
+형식:
+1. [메시지]
+2. [메시지]
+3. [메시지]`;
+  aiGenerate('brandMsg',prompt,'ai-sug-message',document.getElementById('ai-btn-message'));
+}
+
+function aiSlogan(){
+  const prompt=`슬로건을 3개 추천해주세요.
+슬로건 = 10초 안에 기억될 브랜드의 핵심 한 문장.
+
+조건:
+- 워크숍 데이터 + 코칭 노트를 깊이 참고
+- 7~15자 이내 (짧을수록 좋음)
+- 동사로 끝나면 힘이 있음
+- 리듬감 있게
+- 번호만 붙여서 3개 (따옴표 없이)
+
+형식:
+1. [슬로건]
+2. [슬로건]
+3. [슬로건]`;
+  aiGenerate('slogan',prompt,'ai-sug-slogan',document.getElementById('ai-btn-slogan'));
+}
+
+loadAISettings();
 loadData();
 render();
 </script>
