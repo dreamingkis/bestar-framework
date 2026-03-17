@@ -320,7 +320,8 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
   <div class="top-bar-logo">be<span>star</span> branding workshop</div>
   <div class="top-bar-right">
     <label>Brand</label>
-    <input type="text" id="cn" placeholder="브랜드명..." oninput="cN=this.value;saveData()" />
+    <input type="text" id="cn" placeholder="고객명 / 브랜드명..." oninput="cN=this.value;saveData()" />
+    <button class="top-settings" onclick="loadNotionData()" id="notion-btn" title="노션에서 고객 데이터 불러오기">노션 연동</button>
     <button class="top-settings" onclick="openSettings()">AI 설정</button>
     <button class="top-reset" onclick="resetAll()">초기화</button>
   </div>
@@ -339,14 +340,19 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
   <div class="modal">
     <div class="modal-hd"><span class="modal-ttl">AI 설정</span><button class="modal-close" onclick="closeSettings()">&times;</button></div>
     <div class="fl">
-      <label class="fl-lbl">OpenAI API Key</label>
-      <span class="fl-hint">AI 추천 기능을 사용하려면 OpenAI API 키가 필요합니다. Cloudflare Worker 배포 후에는 이 설정이 필요 없습니다. <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--c2)">키 발급받기 →</a></span>
+      <label class="fl-lbl">Worker URL (권장)</label>
+      <span class="fl-hint">Cloudflare Worker를 배포했다면 URL을 입력하세요. API 키 없이 AI + 노션 자동 연동이 됩니다.</span>
+      <input type="text" id="ai-worker-input" placeholder="https://bestar-api.xxxxx.workers.dev" oninput="saveAISettings()" />
+    </div>
+    <div class="fl">
+      <label class="fl-lbl">OpenAI API Key (Worker 없을 때)</label>
+      <span class="fl-hint">Worker가 없으면 직접 API 키를 입력하세요. <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--c2)">키 발급받기 →</a></span>
       <input type="password" id="ai-key-input" placeholder="sk-..." oninput="saveAISettings()" />
     </div>
     <div class="fl">
-      <label class="fl-lbl">코칭 데이터 (선택사항)</label>
-      <span class="fl-hint">노션의 코칭 노트, 심화질문지 답변 등을 붙여넣으세요. AI가 이 맥락을 참고하여 더 정확한 브랜드 결과물을 생성합니다.</span>
-      <textarea id="ai-ctx-input" rows="8" placeholder="예) 고객명: 김서인&#10;분야: 초등교육, 독서&#10;강점: 강의력, 교육 프로그램 기획&#10;목표: 교육사업 브랜딩&#10;핵심 고민: 브랜드 방향성 잡기&#10;&#10;코칭 노트나 심화질문지 내용을 여기에 붙여넣으세요..." oninput="saveAISettings()"></textarea>
+      <label class="fl-lbl">코칭 데이터 (Worker 없을 때 수동 입력)</label>
+      <span class="fl-hint">Worker + 노션 연동 시에는 자동으로 가져옵니다. 그 전까지는 여기에 붙여넣으세요.</span>
+      <textarea id="ai-ctx-input" rows="6" placeholder="코칭 노트, 심화질문지 내용 등..." oninput="saveAISettings()"></textarea>
     </div>
     <div style="text-align:right;margin-top:1rem">
       <button class="btn-n" onclick="closeSettings()" style="padding:11px 28px;font-size:14px">저장 후 닫기</button>
@@ -924,17 +930,19 @@ function renderCH(){
 }
 
 /* ── AI 기능 ── */
-let aiKey='', coachingCtx='';
+let aiKey='', coachingCtx='', workerUrl='';
 function loadAISettings(){
-  try{const s=localStorage.getItem('bestar-ai');if(s){const p=JSON.parse(s);aiKey=p.apiKey||'';coachingCtx=p.coachingCtx||'';}}catch(e){}
+  try{const s=localStorage.getItem('bestar-ai');if(s){const p=JSON.parse(s);aiKey=p.apiKey||'';coachingCtx=p.coachingCtx||'';workerUrl=p.workerUrl||'';}}catch(e){}
 }
 function saveAISettings(){
+  workerUrl=(document.getElementById('ai-worker-input').value||'').trim().replace(/\/$/,'');
   aiKey=document.getElementById('ai-key-input').value.trim();
   coachingCtx=document.getElementById('ai-ctx-input').value;
-  try{localStorage.setItem('bestar-ai',JSON.stringify({apiKey:aiKey,coachingCtx}));}catch(e){}
+  try{localStorage.setItem('bestar-ai',JSON.stringify({apiKey:aiKey,coachingCtx,workerUrl}));}catch(e){}
 }
 function openSettings(){
   loadAISettings();
+  document.getElementById('ai-worker-input').value=workerUrl;
   document.getElementById('ai-key-input').value=aiKey;
   document.getElementById('ai-ctx-input').value=coachingCtx;
   document.getElementById('settings-modal').classList.add('open');
@@ -971,8 +979,22 @@ function getWorkshopContext(){
 
 async function callAI(userPrompt){
   loadAISettings();
-  if(!aiKey){openSettings();throw new Error('API 키를 먼저 설정해주세요.');}
   const workshopData=getWorkshopContext();
+
+  // Worker가 설정되어 있으면 Worker를 통해 호출
+  if(workerUrl){
+    const resp=await fetch(workerUrl+'/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({workshopData,coachingCtx,prompt:userPrompt})
+    });
+    if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error||`Worker 오류 (${resp.status})`);}
+    const data=await resp.json();
+    return data.result;
+  }
+
+  // Worker 없으면 직접 OpenAI API 호출
+  if(!aiKey){openSettings();throw new Error('Worker URL 또는 API 키를 설정해주세요.');}
   const systemPrompt=`당신은 bestar 브랜딩 워크숍의 AI 어시스턴트입니다.
 김인숙 컨설턴트의 강점 기반 브랜드 전략 방법론을 사용합니다.
 
@@ -1006,6 +1028,18 @@ ${coachingCtx?`\n코칭 노트/배경 정보:\n${coachingCtx}`:''}`;
   if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`API 오류 (${resp.status})`);}
   const data=await resp.json();
   return data.choices[0].message.content;
+}
+
+// ── 노션 고객 데이터 자동 불러오기 (Worker 필요) ──
+async function fetchNotionClient(name){
+  if(!workerUrl){throw new Error('노션 연동은 Worker 배포 후 사용 가능합니다.');}
+  const resp=await fetch(workerUrl+'/api/client/data',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name})
+  });
+  if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error||`Worker 오류 (${resp.status})`);}
+  return resp.json();
 }
 
 async function aiGenerate(field,prompt,containerId,btnEl){
@@ -1161,6 +1195,27 @@ function aiSlogan(){
 2. [슬로건]
 3. [슬로건]`;
   aiGenerate('slogan',prompt,'ai-sug-slogan',document.getElementById('ai-btn-slogan'));
+}
+
+async function loadNotionData(){
+  loadAISettings();
+  const name=cN||document.getElementById('cn').value.trim();
+  if(!name){alert('먼저 고객명/브랜드명을 입력하세요.');return;}
+  if(!workerUrl){alert('AI 설정에서 Worker URL을 먼저 입력하세요.\nCloudflare Worker 배포가 필요합니다.');openSettings();return;}
+  const btn=document.getElementById('notion-btn');
+  btn.textContent='불러오는 중...';btn.disabled=true;
+  try{
+    const result=await fetchNotionClient(name);
+    if(result.found){
+      coachingCtx=result.data;
+      document.getElementById('ai-ctx-input').value=coachingCtx;
+      saveAISettings();
+      alert(`"${name}" 고객 데이터를 노션에서 불러왔습니다. (${result.pageCount}개 페이지)\n\nAI 추천 시 자동으로 반영됩니다.`);
+    }else{
+      alert(`"${name}" 고객 데이터를 찾을 수 없습니다.\n노션에 해당 고객의 데이터가 있는지 확인해주세요.`);
+    }
+  }catch(e){alert(e.message);}
+  btn.textContent='노션 연동';btn.disabled=false;
 }
 
 loadAISettings();

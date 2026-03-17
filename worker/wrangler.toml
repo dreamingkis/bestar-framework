@@ -1,0 +1,10 @@
+name = "bestar-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://dreamingkis.github.io"
+
+# 아래 값들은 Cloudflare 대시보드에서 Secrets로 설정하세요
+# wrangler secret put OPENAI_API_KEY
+# wrangler secret put NOTION_TOKEN
